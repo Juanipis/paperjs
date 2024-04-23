@@ -35,25 +35,26 @@ window.onload = function () {
     radius: [13, 8],
     fillColor: "#895638",
   });
-  let cola = new Path.Rectangle({
-    center: [250, 195],
-    size: [40, 10],
-    radius: new Size(5, 5),
-    fillColor: "#895638",
-  });
-  cola.cornerRadius = 5;
+  let cola = dibujarColaPerro(250, 195);
   let piernas1 = new Group([pierna1, pie1]);
   let piernas2 = piernas1.clone();
   let piernas3 = piernas1.clone();
-  piernas2.position.x -= 60; 
-  piernas3.position.x -= 13; 
-  piernas3.position.y -= 6; 
+  piernas2.position.x -= 60;
+  piernas3.position.x -= 13;
+  piernas3.position.y -= 6;
   piernas3.fillColor = "#462a1c";
   let piernas4 = piernas2.clone();
-  piernas4.position.x -= 13; 
-  piernas4.position.y -= 6; 
-  piernas4.fillColor = "#462a1c"; 
-  let cuerpoPerro = new Group([piernas3, piernas4, cuerpo, piernas1, piernas2, cola]);
+  piernas4.position.x -= 13;
+  piernas4.position.y -= 6;
+  piernas4.fillColor = "#462a1c";
+  let cuerpoPerro = new Group([
+    piernas3,
+    piernas4,
+    cuerpo,
+    piernas1,
+    piernas2,
+    cola,
+  ]);
   // let cabeza = new Path.Circle({
   //   center: [350, 160],
   //   radius: 30,
@@ -63,7 +64,7 @@ window.onload = function () {
   cabeza.moveTo(350, 200); // Punto superior
   cabeza.lineTo(320, 240); // Punto izquierdo
   cabeza.arcTo(new Point(350, 280), new Point(380, 240)); // Curva de la gota
-  cabeza.closePath();  // Cerrar el camino
+  cabeza.closePath(); // Cerrar el camino
   cabeza.fillColor = "#895638"; // Marrón claro
   cabeza.rotate(120);
   cabeza.position.y = 160;
@@ -79,20 +80,20 @@ window.onload = function () {
     fillColor: "white",
   });
   let ojo2 = ojo1.clone();
-  ojo2.position.x += 20; 
-  ojo2.position.y -= 8; 
+  ojo2.position.x += 20;
+  ojo2.position.y -= 8;
   // Crear pupilas para ojo1
   let pupila1 = new Path.Circle({
     center: [341, 160], // Centro del ojo1
     radius: 3, // Tamaño de la pupila
-    fillColor: "black" // Color de la pupila
+    fillColor: "black", // Color de la pupila
   });
 
   // Crear pupilas para ojo2
   let pupila2 = new Path.Circle({
     center: [361, 152], // Centro del ojo2
     radius: 3, // Tamaño de la pupila
-    fillColor: "black" // Color de la pupila
+    fillColor: "black", // Color de la pupila
   });
   // Agrupar ojo1 y su pupila
   let grupoOjo1 = new Group([ojo1, pupila1]);
@@ -150,9 +151,10 @@ window.onload = function () {
       perro.position.x += 10;
     }
 
-    //Para el movimiento de la cola
-    cola.rotate(3 * direction);
-    if (event.count % 15 === 0) {
+    // Animar la cola del perro esquina inferior derecha
+    cola.pivot = cola.bounds.bottomRight;
+    cola.rotate(2 * direction);
+    if (event.count % 10 === 0) {
       direction *= -1;
     }
 
@@ -199,4 +201,26 @@ function dibujarFondo() {
       fillColor: "darkgreen",
     });
   }
+}
+
+function dibujarColaPerro(x, y) {
+  let cola = new Path({
+    segments: [
+      [x + 10, y], // base de la cola cerca del cuerpo
+      [x - 40, y - 30], // curva hacia la punta de la cola
+      [x - 20, y], // punto más extremo de la cola
+      [x, y], // curva de regreso hacia el cuerpo
+    ],
+    closed: true, // cierra la forma automáticamente conectando el último punto con el primero
+    fillColor: "#895638", // color de la cola
+  });
+
+  // Ajustar las curvas de los segmentos para crear una cola suave y estilizada
+  cola.smooth(); // Suaviza las curvas de los segmentos
+  cola.smooth({ type: "catmull-rom" }); // Ajusta el tipo de suavizado si es necesario
+
+  // Rotar la cola a la posición deseada
+  cola.rotate(30, new Point(x, y)); // Ajusta el ángulo de rotación si es necesario
+
+  return cola;
 }
