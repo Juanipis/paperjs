@@ -47,18 +47,28 @@ function dibujarArdilla(x, y) {
 }
 
 // Ahora, la función para animar la ardilla
-function animarArdilla(ardilla, velocidad, direccionColaArdilla, event) {
-  // Mover la ardilla
-  ardilla.position.x += velocidad.x;
-  ardilla.position.y += velocidad.y;
+function animarArdilla(ardilla, event) {
+  // Si no existen propiedades de velocidad y dirección, inicialízalas
+  if (!ardilla.data.velocidad) {
+    ardilla.data.velocidad = new paper.Point(10, 10); // Velocidad inicial en x y y
+  }
 
-  // Cambiar la dirección si la ardilla llega al borde del canvas
-  if (ardilla.bounds.left < 0 || ardilla.bounds.right > view.size.width) {
-    velocidad.x *= -1;
+  // Calcula la nueva posición
+  let nuevaPosicion = ardilla.position.add(ardilla.data.velocidad);
+
+  // Comprueba si la ardilla ha alcanzado los bordes del canvas para invertir la dirección
+  if (nuevaPosicion.x < 0 || nuevaPosicion.x > paper.view.size.width) {
+    ardilla.data.velocidad.x *= -1; // Invertir la dirección horizontal
   }
-  if (ardilla.bounds.top < 0 || ardilla.bounds.bottom > view.size.height) {
-    velocidad.y *= -1;
+  if (nuevaPosicion.y < 0 || nuevaPosicion.y > paper.view.size.height) {
+    ardilla.data.velocidad.y *= -1; // Invertir la dirección vertical
   }
+
+  // Actualiza la posición de la ardilla
+  ardilla.position = ardilla.position.add(ardilla.data.velocidad);
+
+  // Opcional: rotar la ardilla con el tiempo
+  ardilla.rotate(Math.sin(event.time) * 2);
 }
 
 export { dibujarArdilla, animarArdilla };
