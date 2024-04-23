@@ -1,11 +1,21 @@
 paper.install(window);
 
+//importaciones
+// de ./hidrante.js la función dibujarHidrante
+import dibujarHidrante from "./hidrante.js";
+import dibujarLago from "./lago.js";
+import { dibujarBosque } from "./arbol.js";
+import { dibujarArdilla, animarArdilla } from "./ardilla.js";
+
 window.onload = function () {
   paper.setup(document.getElementById("miCanvas"));
 
-  const size = new Size(800, 600);
+  const size = new Size(window.innerWidth - 21.9, window.innerHeight - 25);
   view.viewSize = size;
   let direction = 1;
+
+  // fondo
+  dibujarFondo();
 
   // vamos a hacer un perro
 
@@ -49,6 +59,14 @@ window.onload = function () {
   let keys = {};
   let tool = new paper.Tool();
 
+  // Ardilla
+  let ardilla = dibujarArdilla(100, 100); // Cambia las coordenadas según donde quieras que empiece la ardilla
+  let velocidadArdilla = {
+    x: Math.random() * 20 - 2,
+    y: Math.random() * 20 - 2,
+  };
+  let direccionColaArdilla = 1;
+
   // Para el movimiento del perro, vamos a usar las teclas de dirección
   tool.onKeyDown = function (event) {
     keys[event.key] = true;
@@ -76,5 +94,48 @@ window.onload = function () {
     if (event.count % 15 === 0) {
       direction *= -1;
     }
+
+    // Animar la ardilla
+    animarArdilla(ardilla, velocidadArdilla, direccionColaArdilla, event);
+    // animar cola ardilla
+    ardilla.children[1].rotate(3 * direccionColaArdilla);
+    if (event.count % 10 === 0) {
+      direccionColaArdilla *= -1;
+    }
   };
 };
+
+function dibujarFondo() {
+  // Fondo verde
+  Path.Rectangle({
+    from: [0, 0],
+    to: [window.innerWidth, window.innerHeight],
+    fillColor: "green",
+  });
+
+  // Hidrante
+  dibujarHidrante(window.innerWidth * 0.1, window.innerHeight * 0.5);
+  dibujarHidrante(window.innerWidth * 0.9, window.innerHeight * 0.2, 1.7);
+
+  // Lago
+  dibujarLago(window.innerWidth * 0.7, window.innerHeight * 0.7, 300, 150);
+
+  // Árboles
+  // Vamos a hacer mini bosques, para ello varios arboles juntos
+  dibujarBosque(window.innerWidth * 0.5, window.innerHeight * 0.25, 5);
+  dibujarBosque(window.innerWidth * 0.8, window.innerHeight * 0.75, 5);
+  dibujarBosque(window.innerWidth * 0.2, window.innerHeight * 0.75, 5);
+  dibujarBosque(window.innerWidth * 0.7, window.innerHeight * 0.25, 5);
+  dibujarBosque(window.innerWidth * 0.2, window.innerHeight * 0.1, 5);
+  dibujarBosque(window.innerWidth * 0.1, window.innerHeight * 0.2, 5);
+  dibujarBosque(window.innerWidth * 0.5, window.innerHeight * 0.5, 5);
+
+  // Hierbas
+  for (let i = 0; i < 10; i++) {
+    Path.Ellipse({
+      center: [window.innerWidth * Math.random(), window.innerHeight * 0.95],
+      radius: [10, 30],
+      fillColor: "darkgreen",
+    });
+  }
+}
