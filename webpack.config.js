@@ -3,17 +3,17 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: "./js/script.js", // Cambiado de ./index.js a ./js/script.js
+  entry: "./js/script.js", // Asegúrate que este es el punto correcto de entrada
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/paperjs/",
+    publicPath: "/", // Public path para Vercel
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"], // Agregado postcss-loader para TailwindCSS
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"], // Asegúrate de instalar postcss-loader si lo necesitas
       },
       {
         test: /\.js$/,
@@ -29,7 +29,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./index.html", // Usar index.html en la raíz como plantilla
+      template: "./index.html", // Usando el index.html en la raíz como plantilla
       filename: "index.html", // Nombre del archivo en la salida
     }),
     new MiniCssExtractPlugin({
