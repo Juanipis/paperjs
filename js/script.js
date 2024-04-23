@@ -35,7 +35,7 @@ window.onload = function () {
     radius: [13, 8],
     fillColor: "#895638",
   });
-  let cola = dibujarColaPerro(250, 195);
+  let cola = dibujarColaPerro(255, 195);
   let piernas1 = new Group([pierna1, pie1]);
   let piernas2 = piernas1.clone();
   let piernas3 = piernas1.clone();
@@ -108,13 +108,21 @@ window.onload = function () {
     radius: new Size(15, 15),
     fillColor: "#462a1c",
   });
+
+  let oreja2 = new Path.Rectangle({
+    center: [365, 160],
+    size: [30, 50],
+    radius: new Size(15, 15),
+    fillColor: "#462a1c",
+  });
+  oreja2.rotate(-15);
   // new Path.Ellipse({
   //   center: [330, 130],
   //   size: [15, 25],
   //   fillColor: "#E0BB95", // Marrón claro
   // });
 
-  let cabezaPerro = new Group([cabeza, grupoOjo1, grupoOjo2, nariz, oreja1]);
+  let cabezaPerro = new Group([oreja2, cabeza, grupoOjo1, grupoOjo2, nariz, oreja1]);
 
   // Los unimos a traves de un grupo
   let perro = new Group([cuerpoPerro, cabezaPerro]);
@@ -130,7 +138,10 @@ window.onload = function () {
   let direccionColaArdilla = 1;
 
   let direccionPata1 = 1;
-
+  let direccionPata2 = -1;
+  let direccionPata3 = -1;
+  let direccionPata4 = 1;
+  let derecha=true
   // Para el movimiento del perro, vamos a usar las teclas de dirección
   tool.onKeyDown = function (event) {
     keys[event.key] = true;
@@ -148,18 +159,35 @@ window.onload = function () {
     }
     if (keys["a"]) {
       perro.position.x -= 5;
+      if (derecha){
+        perro.scaling.x = -1;
+        derecha=false
+      }
     }
     if (keys["d"]) {
       perro.position.x += 5;
+      if (!derecha){
+        perro.scaling.x = -1;
+        derecha=true
+      }
     }
 
     //Si alguna de las teclas de dirección está presionada
     if (keys["w"] || keys["a"] || keys["s"] || keys["d"]) {
       // rotar pierna 1
-      piernas1.pivot = piernas1.bounds.topLeft;
+      piernas1.pivot = piernas1.bounds.topRight;
       piernas1.rotate(1 * direccionPata1);
+      piernas4.pivot = piernas4.bounds.topLeft;
+      piernas4.rotate(1 * direccionPata4);
+      piernas2.pivot = piernas2.bounds.topLeft;
+      piernas2.rotate(1 * direccionPata2);
+      piernas3.pivot = piernas3.bounds.topRight;
+      piernas3.rotate(1 * direccionPata3);
       if (event.count % 10 === 0) {
         direccionPata1 *= -1;
+        direccionPata4 *= -1;
+        direccionPata2 *= -1;
+        direccionPata3 *= -1;
       }
     }
 
