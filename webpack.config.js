@@ -27,9 +27,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      paper: "paper",
-    }),
     new HtmlWebpackPlugin({
       template: "./index.html", // Usar index.html en la raíz como plantilla
       filename: "index.html", // Nombre del archivo en la salida
