@@ -129,6 +129,8 @@ window.onload = function () {
   };
   let direccionColaArdilla = 1;
 
+  let direccionPata1 = 1;
+
   // Para el movimiento del perro, vamos a usar las teclas de dirección
   tool.onKeyDown = function (event) {
     keys[event.key] = true;
@@ -139,16 +141,26 @@ window.onload = function () {
 
   view.onFrame = function (event) {
     if (keys["w"]) {
-      perro.position.y -= 10;
+      perro.position.y -= 5;
     }
     if (keys["s"]) {
-      perro.position.y += 10;
+      perro.position.y += 5;
     }
     if (keys["a"]) {
-      perro.position.x -= 10;
+      perro.position.x -= 5;
     }
     if (keys["d"]) {
-      perro.position.x += 10;
+      perro.position.x += 5;
+    }
+
+    //Si alguna de las teclas de dirección está presionada
+    if (keys["w"] || keys["a"] || keys["s"] || keys["d"]) {
+      // rotar pierna 1
+      piernas1.pivot = piernas1.bounds.topLeft;
+      piernas1.rotate(1 * direccionPata1);
+      if (event.count % 10 === 0) {
+        direccionPata1 *= -1;
+      }
     }
 
     // Animar la cola del perro esquina inferior derecha
