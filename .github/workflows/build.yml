@@ -3,7 +3,7 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Cambia 'main' por tu rama de desarrollo si es diferente
+      - master # Cambia 'main' por tu rama de desarrollo si es diferente
 
 jobs:
   build-and-deploy:
