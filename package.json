@@ -2,6 +2,7 @@
   "name": "paperjs",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://juanipis.github.io/paper-js",
   "main": "index.js",
   "scripts": {
     "test": "live-server",
