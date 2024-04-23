@@ -30,6 +30,10 @@ export default function dibujarArbol(x, y) {
   // Agrupa el tronco y la copa para formar el árbol completo
   let arbol = new Group([tronco, copa, hojas]);
 
+  // Escalar de manera aleatoria el árbol entre 0.8 y 1.3
+  let factorEscala = Math.random() * 0.5 + 0.8;
+  arbol.scale(factorEscala);
+
   return arbol;
 }
 
